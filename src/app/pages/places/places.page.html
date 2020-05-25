@@ -5,5 +5,20 @@
 </ion-header>
 
 <ion-content>
+  <ion-card *ngFor="let park of parks">
+
+    <ion-card-content>
+      <ion-card-title>{{ park.properties.dist }}</ion-card-title>
+        <p>{{park.properties.ocupado}}</p>
+    </ion-card-content>
+</ion-card>
+
+<ion-infinite-scroll (ionInfinite)="loadMoreParks($event)">
+  <ion-infinite-scroll-content 
+  loadingSpinner="circles">
+
+
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 
 </ion-content>

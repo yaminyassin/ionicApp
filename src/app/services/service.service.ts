@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class TestService {
+export class ServiceService {
   url = 'http://localhost:3000/';
   data:any;
-
   constructor(private http: HttpClient) {}
   
   getParks(lat:number, long:number){
