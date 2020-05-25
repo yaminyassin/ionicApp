@@ -105,6 +105,15 @@ export class MapPage implements OnInit {
 
       this.map.fitBounds(this.features.getBounds(), {animate:true, duration:1});
       
+         
+      var routing = L.Routing.control({
+        waypoints: [
+            L.latLng(38.7743744 ,-9.1062272),
+            L.latLng(38.785903,-9.110801)
+        ],
+        routeWhileDragging: false,
+        
+      }).addTo(this.map);
 
 
     });
