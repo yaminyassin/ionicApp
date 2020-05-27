@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MapPageRoutingModule } from './map-routing.module';
 
 import { MapPage } from './map.page';
+import { SlideDrawerComponent } from '../../components/slide-drawer/slide-drawer.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { MapPage } from './map.page';
     IonicModule,
     MapPageRoutingModule
   ],
-  declarations: [MapPage]
+  declarations: [MapPage, SlideDrawerComponent]
 })
 export class MapPageModule {}

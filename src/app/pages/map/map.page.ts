@@ -16,7 +16,12 @@ export class MapPage implements OnInit {
   map: L.Map;
   lat: number;
   lng: number;
+
   markerPos:L.Marker;
+
+  origin:L.LatLng;
+  desination:L.LatLng;
+
   features:L.FeatureGroup;
   
   //making fab btns only appear when map move:
@@ -100,12 +105,17 @@ export class MapPage implements OnInit {
           this.features.addLayer(layer);
           this.features.getLayer(this.features.getLayerId(layer))
           .addTo(this.map)
-          .bindPopup(`${park.ocupado}% de lugares ocupados`); 
+          .bindPopup(`<p> ${park.ocupado}% de lugares ocupados </p>
+                      <p>
+                        <ion-button expand="full" '>
+                          GO
+                        </ion-button>
+                      </p>`); 
       });
 
       this.map.fitBounds(this.features.getBounds(), {animate:true, duration:1});
       
-         
+      /*  
       var routing = L.Routing.control({
         waypoints: [
             L.latLng(38.7743744 ,-9.1062272),
@@ -114,11 +124,15 @@ export class MapPage implements OnInit {
         routeWhileDragging: false,
         
       }).addTo(this.map);
+      */
 
-
-    });
-      
+    }); 
   }
+
+  getRoute(){
+    this.origin = this.markerPos.getLatLng();
+    
+  } 
 
   private buildGeoJSON(ocupados:any, geo:any): JSON{
     let str =`{"type": "Feature",
