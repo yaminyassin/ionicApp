@@ -1,6 +1,6 @@
 
 <ion-content>
-    <div id="map"></div>
+    <div id="map" #map ></div>
 
     <ion-fab  vertical="top" horizontal="end" slot="fixed">
       <ion-fab-button *ngIf='isVisable' size="small" (click)='getCurrentPos()'>
@@ -13,5 +13,5 @@
 
 </ion-content>
 
-<app-slide-drawer></app-slide-drawer>
+<app-slide-drawer (state)="getDrawerState($event)"></app-slide-drawer>
 <!-- meter um ngIF quando pedirmos os parques disponiveis -->

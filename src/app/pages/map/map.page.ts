@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { GestureController } from '@ionic/angular';
+import { Gesture, GestureConfig } from '@ionic/core';
 import { Plugins } from '@capacitor/core';
 import { ServiceService } from '../../services/service.service'
+import { SlideDrawerComponent } from '../../components/slide-drawer/slide-drawer.component';
 
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -12,27 +15,37 @@ const { Geolocation } = Plugins;
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage implements OnInit {
+export class MapPage implements AfterViewInit {
+
+  @ViewChild( SlideDrawerComponent ) childReference: any;
+  @ViewChild('map') mapDiv: ElementRef; 
+
   map: L.Map;
   lat: number;
   lng: number;
 
-  markerPos:L.Marker;
+  markerPos:L.Marker;   //userPosition
 
-  origin:L.LatLng;
-  desination:L.LatLng;
+  origin:L.LatLng;        
+  desination:L.LatLng;    
 
-  features:L.FeatureGroup;
+  features:L.FeatureGroup; //list of parks inside map
   
-  //making fab btns only appear when map move:
-  isVisable: boolean;
+  isVisable: boolean;    //making fab btns only appear when map move:
 
-  constructor(private service:ServiceService) {
+  drawerState: boolean = false;
+  
+
+  constructor(
+    private service:ServiceService,
+    private element: ElementRef,
+    private renderer: Renderer2) 
+    {
     this.isVisable = false;
     this.features = new L.FeatureGroup();
-  }
-   
-  ngOnInit(){
+    }
+    
+  ngAfterViewInit(){
     this.loadMap();
   }
 
@@ -58,7 +71,7 @@ export class MapPage implements OnInit {
 
 
   public async getCurrentPos(){
-    try {
+    try {   
       let position = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 1000
@@ -77,7 +90,7 @@ export class MapPage implements OnInit {
       this.map.addLayer(this.markerPos).panTo(latlng, {
         animate:true,
         duration:0.5 
-      }).on('mouseup', () => this.isVisable=true,);
+      }).on('mouseup', () => this.isVisable=true);
 
     } catch (error) {
       console.log(error.message);
@@ -88,32 +101,40 @@ export class MapPage implements OnInit {
 
   public async getData(){
     let obj:any;
-    
-    for(let i=0; i<this.features.getLayers().length; i++){
-      this.map.removeLayer(this.features.getLayers()[i]);
-    }
+    this.features.removeFrom(this.map);
+    this.features = new L.FeatureGroup();
 
     this.service.getParks(this.lat, this.lng)
     .subscribe((parks) => {
       let data:any = parks;
       let layer:any;
 
-      data.forEach(park => {
+      data.forEach((park: { ocupado: any; geo: any; }) => {
           obj = this.buildGeoJSON(park.ocupado, park.geo);
 
           layer = L.geoJSON(obj, {style: this.style(obj)} );
-          this.features.addLayer(layer);
-          this.features.getLayer(this.features.getLayerId(layer))
-          .addTo(this.map)
-          .bindPopup(`<p> ${park.ocupado}% de lugares ocupados </p>
-                      <p>
-                        <ion-button expand="full" '>
-                          GO
-                        </ion-button>
-                      </p>`); 
+
+          this.features.addLayer(layer).addTo(this.map).on("click", ev =>{
+
+            console.log(ev.layer.feature.properties.ocupado);
+
+            this.map.fitBounds(ev.layer.getBounds(), 
+            {
+              animate:true,
+              duration:1
+            });
+
+          });
+         
       });
 
-      this.map.fitBounds(this.features.getBounds(), {animate:true, duration:1});
+      
+      this.map.fitBounds(this.features.getBounds(), 
+      {
+        animate:true,
+        duration:1,
+        maxZoom:15
+      });
       
       /*  
       var routing = L.Routing.control({
@@ -158,4 +179,23 @@ export class MapPage implements OnInit {
     };
   }
 
+ 
+  public getDrawerState(state: boolean){
+    console.log(`parent recieved ${state}`);
+    this.drawerState = state;
+    this.Animations();
+  }
+
+
+  private Animations(){
+    console.log(`animation ${this.drawerState}`);
+    this.renderer.setStyle(this.element.nativeElement, 'transition', '0.5s ease-out');
+    if(this.drawerState){
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "40%");
+    }else{
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "100%");
+    }
+    this.map.invalidateSize();
+  }
+ 
 }
