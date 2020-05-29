@@ -32,7 +32,7 @@ export class MapPage implements AfterViewInit {
   isVisable: boolean;    //making fab btns only appear when map move:
 
   drawerState: boolean = false;
-  sentparks: L.GeoJSON[] = [];
+  sentparks: L.Layer[] = [];
 
   constructor(
     private service:ServiceService,
@@ -100,24 +100,26 @@ export class MapPage implements AfterViewInit {
 
   public async getData(){
     let obj:any;
-    this.features.removeFrom(this.map);
+    this.features.removeFrom(this.map); 
     this.features = new L.FeatureGroup();
+    this.sentparks = [];
 
     this.service.getParks(this.lat, this.lng)
     .subscribe((parks) => {
       let data:any = parks;
-      let layer:any;
+      let layer:L.Layer;
 
       data.forEach( park => {
 
           obj = this.buildGeoJSON(park.ocupado, park.geo);
 
-          this.sentparks.push(obj); //array que envia parks ao component
+           //array que envia parks ao component
+
+           this.sentparks.push(obj);
 
           layer = L.geoJSON(obj, {style: this.style(obj)} );
-         
           this.features.addLayer(layer).addTo(this.map).on("click", ev =>{
-
+            
             this.map.fitBounds(ev.layer.getBounds(), 
             {
               animate:true,
@@ -127,7 +129,8 @@ export class MapPage implements AfterViewInit {
           });
          
       });
-
+      
+      
       this.sendData(this.sentparks);
       
       this.map.fitBounds(this.features.getBounds(), 
@@ -153,7 +156,7 @@ export class MapPage implements AfterViewInit {
 
   getRoute(){
     this.origin = this.markerPos.getLatLng();
-    
+    this.desination;
   } 
 
   private buildGeoJSON(ocupados:any, geo:any): JSON{
@@ -193,9 +196,9 @@ export class MapPage implements AfterViewInit {
   private Animations(){
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
     if(this.drawerState){
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "40%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "38%");
     }else{
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "100%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "98%");
     }
     setTimeout(() =>{this.map.invalidateSize();}, 600);
    

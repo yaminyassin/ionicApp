@@ -11,10 +11,12 @@ import { DatastreamService } from '../../services/datastream.service';
   styleUrls: ['./slide-drawer.component.scss'],
 })
 export class SlideDrawerComponent implements AfterViewInit {
-  parklist: any[] = [];
+  
+  //variaveis que comunicam
   @Output() state = new EventEmitter<boolean>();
-
+  parklist: any[] = [];
   drawerState:boolean;
+
   height: number;
   swipeHeader: any;
 
@@ -62,7 +64,8 @@ export class SlideDrawerComponent implements AfterViewInit {
           this.height = 0;
           this.drawerState = false;
         }
-        
+        console.log(this.parklist);
+
         //alterar state no final da animacao
         this.stateChanged(this.drawerState); 
       }
@@ -78,6 +81,10 @@ export class SlideDrawerComponent implements AfterViewInit {
   }
 
   loadMoreParks(event:any){
-    this.stream.currentData.subscribe(data => this.parklist = data);
+
+    this.stream.currentData.subscribe(data=> {
+      this.parklist = data
+    });
+  
   }
 }

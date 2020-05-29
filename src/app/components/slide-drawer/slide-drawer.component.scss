@@ -1,6 +1,6 @@
 :host {
 position: absolute;
-top: 85%;
+top: 92%;
 right: 0;
 left: 0;
 
@@ -10,7 +10,14 @@ left: 0;
 ion-card{
     margin: 0;
 }
+.list-ios{
+    background: #36abe0;
+}
 
+ion-item{
+    margin-top: 10px;
+    
+}
 
 ion-card-content {
     min-height: 400px;

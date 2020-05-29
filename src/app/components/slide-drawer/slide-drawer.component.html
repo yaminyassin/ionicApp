@@ -1,10 +1,18 @@
-<ion-card color="primary" >
+<ion-card color="primary">
   <ion-card-header>
     Choose a park
   </ion-card-header>
   <ion-card-content>
     <ion-list *ngFor='let park of parklist'>
-      <ion-button>{{park.properties.ocupado}}</ion-button>
+      <ion-item button color="secondary"> 
+        <ion-icon name="car-sport-outline"></ion-icon>
+        <ion-item-divider color="secondary">
+          <ion-label color="light">
+          Park is : <strong>{{park.properties.ocupado}}% full</strong> 
+          </ion-label>
+        </ion-item-divider>
+      </ion-item>
+     
     </ion-list>
   </ion-card-content>
     
