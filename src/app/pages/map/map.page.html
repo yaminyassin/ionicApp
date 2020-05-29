@@ -1,15 +1,17 @@
 
 <ion-content>
-    <div id="map" #map ></div>
+    <div id="map" #map >
+      <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button *ngIf='isVisable' size="small" (click)='getCurrentPos()'>
+          <ion-icon name="navigate-circle-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" (click)='getData()'>
+          <ion-icon name="car-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
 
-    <ion-fab  vertical="top" horizontal="end" slot="fixed">
-      <ion-fab-button *ngIf='isVisable' size="small" (click)='getCurrentPos()'>
-        <ion-icon name="navigate-circle-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button size="small" (click)='getData()'>
-        <ion-icon name="car-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+   
 
 </ion-content>
 

@@ -196,9 +196,9 @@ export class MapPage implements AfterViewInit {
   private Animations(){
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
     if(this.drawerState){
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "38%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "37%");
     }else{
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "98%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "93%");
     }
     setTimeout(() =>{this.map.invalidateSize();}, 600);
    
