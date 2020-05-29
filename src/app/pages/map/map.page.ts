@@ -1,12 +1,11 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { GestureController } from '@ionic/angular';
-import { Gesture, GestureConfig } from '@ionic/core';
 import { Plugins } from '@capacitor/core';
-import { ServiceService } from '../../services/service.service'
-import { SlideDrawerComponent } from '../../components/slide-drawer/slide-drawer.component';
+import { ServiceService } from '../../services/service.service';
+import { DatastreamService } from '../../services/datastream.service';
 
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
+import { ThrowStmt } from '@angular/compiler';
 
 const { Geolocation } = Plugins;
 
@@ -17,7 +16,6 @@ const { Geolocation } = Plugins;
 })
 export class MapPage implements AfterViewInit {
 
-  @ViewChild( SlideDrawerComponent ) childReference: any;
   @ViewChild('map') mapDiv: ElementRef; 
 
   map: L.Map;
@@ -34,10 +32,11 @@ export class MapPage implements AfterViewInit {
   isVisable: boolean;    //making fab btns only appear when map move:
 
   drawerState: boolean = false;
-  
+  sentparks: L.GeoJSON[] = [];
 
   constructor(
     private service:ServiceService,
+    private stream:DatastreamService,
     private element: ElementRef,
     private renderer: Renderer2) 
     {
@@ -109,14 +108,15 @@ export class MapPage implements AfterViewInit {
       let data:any = parks;
       let layer:any;
 
-      data.forEach((park: { ocupado: any; geo: any; }) => {
+      data.forEach( park => {
+
           obj = this.buildGeoJSON(park.ocupado, park.geo);
 
+          this.sentparks.push(obj); //array que envia parks ao component
+
           layer = L.geoJSON(obj, {style: this.style(obj)} );
-
+         
           this.features.addLayer(layer).addTo(this.map).on("click", ev =>{
-
-            console.log(ev.layer.feature.properties.ocupado);
 
             this.map.fitBounds(ev.layer.getBounds(), 
             {
@@ -128,6 +128,7 @@ export class MapPage implements AfterViewInit {
          
       });
 
+      this.sendData(this.sentparks);
       
       this.map.fitBounds(this.features.getBounds(), 
       {
@@ -181,21 +182,23 @@ export class MapPage implements AfterViewInit {
 
  
   public getDrawerState(state: boolean){
-    console.log(`parent recieved ${state}`);
     this.drawerState = state;
     this.Animations();
   }
 
+  public sendData(data: any){
+    this.stream.changeData(data);
+  }
 
   private Animations(){
-    console.log(`animation ${this.drawerState}`);
-    this.renderer.setStyle(this.element.nativeElement, 'transition', '0.5s ease-out');
+    this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
     if(this.drawerState){
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "40%");
     }else{
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "100%");
     }
-    this.map.invalidateSize();
+    setTimeout(() =>{this.map.invalidateSize();}, 600);
+   
   }
  
 }

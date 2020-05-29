@@ -1,9 +1,9 @@
 import { Component, AfterViewInit, ElementRef,
-   Renderer2,Input, Output, EventEmitter } from '@angular/core';
+        Renderer2, Output, EventEmitter } from '@angular/core';
 import { GestureController } from '@ionic/angular';
 import { Gesture, GestureConfig } from '@ionic/core';
-import { identifierModuleUrl } from '@angular/compiler';
 
+import { DatastreamService } from '../../services/datastream.service';
 
 @Component({
   selector: 'app-slide-drawer',
@@ -11,13 +11,15 @@ import { identifierModuleUrl } from '@angular/compiler';
   styleUrls: ['./slide-drawer.component.scss'],
 })
 export class SlideDrawerComponent implements AfterViewInit {
-
+  parklist: any[] = [];
   @Output() state = new EventEmitter<boolean>();
 
   drawerState:boolean;
   height: number;
+  swipeHeader: any;
 
   constructor(
+    private stream: DatastreamService,
     private getureCtrl: GestureController, 
     private element: ElementRef,
     private renderer: Renderer2)
@@ -28,9 +30,14 @@ export class SlideDrawerComponent implements AfterViewInit {
 
 
   ngAfterViewInit() {
+    this.Animations()
+    this.stream.currentData.subscribe(data => this.parklist = data);
+    this.swipeHeader = this.element.nativeElement.children[0].children[0];
+  }
 
+  private Animations(){
     const opts: GestureConfig = {
-      el: this.element.nativeElement,
+      el: this.element.nativeElement.children[0].children[0],
       direction: 'y',
       gestureName: 'slide-drawer-swipe',
       onStart: () => {
@@ -44,7 +51,7 @@ export class SlideDrawerComponent implements AfterViewInit {
 
       },
       onEnd: ev => {
-        this.renderer.setStyle(this.element.nativeElement, 'transition', '0.5s ease-out');
+        this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
 
         if(ev.deltaY < -100){ //snap to top
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(-350px)`);
@@ -56,19 +63,21 @@ export class SlideDrawerComponent implements AfterViewInit {
           this.drawerState = false;
         }
         
-        this.stateChanged(this.drawerState);
+        //alterar state no final da animacao
+        this.stateChanged(this.drawerState); 
       }
     };
 
     const gesture: Gesture = this.getureCtrl.create(opts);
-
-    gesture.enable();
     
+    gesture.enable();
   }
 
   stateChanged(value:boolean){
-    console.log(`child sent ${value}`);
     this.state.emit(value);
   }
 
+  loadMoreParks(event:any){
+    this.stream.currentData.subscribe(data => this.parklist = data);
+  }
 }
