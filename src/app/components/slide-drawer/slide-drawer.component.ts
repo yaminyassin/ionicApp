@@ -14,6 +14,8 @@ export class SlideDrawerComponent implements AfterViewInit {
   
   //variaveis que comunicam
   @Output() state = new EventEmitter<boolean>();
+  @Output() parkPicked = new EventEmitter<any>();
+
   parklist: any[] = [];
   drawerState:boolean;
 
@@ -64,7 +66,6 @@ export class SlideDrawerComponent implements AfterViewInit {
           this.height = 0;
           this.drawerState = false;
         }
-        console.log(this.parklist);
 
         //alterar state no final da animacao
         this.stateChanged(this.drawerState); 
@@ -76,12 +77,22 @@ export class SlideDrawerComponent implements AfterViewInit {
     gesture.enable();
   }
 
-  stateChanged(value:boolean){
+  /* ------ Data sharing functions -------*/
+
+  //Event Emitters
+  private stateChanged(value:boolean){
+    console.log("child sent: "+ value);
     this.state.emit(value);
   }
 
-  loadMoreParks(event:any){
+  public chosenPark(value: Object){
+    console.log("child sent: "+ value);
+    this.parkPicked.emit(value);
+  }
 
+
+  //Bidirectional 
+  loadMoreParks(event:any){
     this.stream.currentData.subscribe(data=> {
       this.parklist = data
     });

@@ -1,26 +1,37 @@
 <ion-card color="primary">
+
   <ion-card-header>
-    Choose a park
+    <ion-card-title>Select a Park</ion-card-title> 
   </ion-card-header>
+
   <ion-card-content>
-    <ion-list *ngFor='let park of parklist'>
-      <ion-item button color="secondary"> 
-        <ion-icon name="car-sport-outline"></ion-icon>
-        <ion-item-divider color="secondary">
-          <ion-label color="light">
-          Park is : <strong>{{park.properties.ocupado}}% full</strong> 
-          </ion-label>
-        </ion-item-divider>
-      </ion-item>
-     
-    </ion-list>
+    <div *ngIf="drawerState">
+      <ion-list *ngFor='let park of parklist'>
+        <ion-item button (click)="chosenPark(park)" color="secondary"> 
+          <ion-icon name="car-sport-outline"></ion-icon>
+          <ion-item-divider color="secondary">
+            <ion-label color="light">
+            Park is : <strong>{{park.ocupado}}% full</strong> 
+            </ion-label>
+          </ion-item-divider>
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-card-content>
-    
- 
 
 </ion-card>
 
 
+<!--
+  <ion-virtual-scroll [items]="parklist" approxItemHeight="62px">
+    <ion-card *virtualItem="let park">
+      <ion-card-header>
+        <ion-card-title>{{park.properties.ocupado}}% full</ion-card-title> 
+      </ion-card-header>
+      <ion-card-content>{{park.geometry.type}}</ion-card-content>
+    </ion-card>
+  </ion-virtual-scroll>
 
 
+-->
 

@@ -25,7 +25,8 @@ export class MapPage implements AfterViewInit {
   markerPos:L.Marker;   //userPosition
 
   origin:L.LatLng;        
-  desination:L.LatLng;    
+  desination:any;    
+  routing:L.Routing.Control;
 
   features:L.FeatureGroup; //list of parks inside map
   
@@ -97,67 +98,45 @@ export class MapPage implements AfterViewInit {
   }
 
   
-
   public async getData(){
     let obj:any;
     this.features.removeFrom(this.map); 
     this.features = new L.FeatureGroup();
     this.sentparks = [];
 
-    this.service.getParks(this.lat, this.lng)
-    .subscribe((parks) => {
+    this.service.getParks(this.lat, this.lng).subscribe((parks) => {
       let data:any = parks;
       let layer:L.Layer;
 
       data.forEach( park => {
+        obj = this.buildGeoJSON(park.ocupado, park.geo);
 
-          obj = this.buildGeoJSON(park.ocupado, park.geo);
+        //array que envia parks ao component
+        this.sentparks.push(park);
 
-           //array que envia parks ao component
-
-           this.sentparks.push(obj);
-
-          layer = L.geoJSON(obj, {style: this.style(obj)} );
-          this.features.addLayer(layer).addTo(this.map).on("click", ev =>{
-            
-            this.map.fitBounds(ev.layer.getBounds(), 
-            {
-              animate:true,
-              duration:1
-            });
-
+        layer = L.geoJSON(obj, {style: this.style(obj)} );
+        this.features.addLayer(layer).addTo(this.map).on("click", ev =>{
+          
+          this.map.fitBounds( ev.layer.getBounds(), 
+          {
+            animate:true,
+            duration:1
           });
-         
+        });
       });
       
-      
+      //Evia o array com os parques 
       this.sendData(this.sentparks);
       
-      this.map.fitBounds(this.features.getBounds(), 
+      this.map.fitBounds( this.features.getBounds(), 
       {
         animate:true,
         duration:1,
         maxZoom:15
       });
-      
-      /*  
-      var routing = L.Routing.control({
-        waypoints: [
-            L.latLng(38.7743744 ,-9.1062272),
-            L.latLng(38.785903,-9.110801)
-        ],
-        routeWhileDragging: false,
-        
-      }).addTo(this.map);
-      */
-
     }); 
   }
 
-  getRoute(){
-    this.origin = this.markerPos.getLatLng();
-    this.desination;
-  } 
 
   private buildGeoJSON(ocupados:any, geo:any): JSON{
     let str =`{"type": "Feature",
@@ -165,13 +144,11 @@ export class MapPage implements AfterViewInit {
       "geometry": ${geo}}`;
     return JSON.parse(str);
   }
-
   private getColor(d:any):string{
     return (d>0 && d<=50)? '#00e600' :
            (d>50 && d<=80) ? '#ffff00' :
            '#e60000';
   }
-
   private style(feature:any){
     return {
         fillColor: this.getColor(feature.properties.ocupado),
@@ -182,17 +159,6 @@ export class MapPage implements AfterViewInit {
         fillOpacity: 0.60
     };
   }
-
- 
-  public getDrawerState(state: boolean){
-    this.drawerState = state;
-    this.Animations();
-  }
-
-  public sendData(data: any){
-    this.stream.changeData(data);
-  }
-
   private Animations(){
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
     if(this.drawerState){
@@ -203,5 +169,55 @@ export class MapPage implements AfterViewInit {
     setTimeout(() =>{this.map.invalidateSize();}, 600);
    
   }
+ 
+/*----- Data Sharing Functions -----*/
+
+  public getRoute(value:Object){
+    console.log("parent recieved: " + value);
+
+    let route:any = value;
+
+    let obj:any = this.buildGeoJSON(route.ocupado, route.geo);
+
+    this.origin = this.markerPos.getLatLng();
+    this.desination = L.geoJSON(obj, {style: this.style(obj)} ).getBounds().getCenter();
+    let waypoints = [this.origin, this.desination];
+
+    if( this.routing != undefined ){ this.routing.remove(); }
+     
+    
+    this.routing = L.Routing.control(
+    {
+      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.6:5000/route/v1' }),
+
+      plan: L.Routing.plan(waypoints, {
+        draggableWaypoints:false,
+        addWaypoints:false
+      }),
+
+      routeWhileDragging: false,
+      waypoints: waypoints,
+      lineOptions: {addWaypoints:false},
+      
+    }).addTo(this.map);
+
+
+    this.map.fitBounds(L.latLngBounds(waypoints), 
+    {padding: [50, 50]});
+
+ 
+  }
+
+  public getDrawerState(state: boolean){
+    console.log("parent recieved: "+ state);
+    this.drawerState = state;
+    this.Animations();
+  }
+
+  public sendData(data: any){
+    this.stream.changeData(data);
+  }
+
+ 
  
 }
