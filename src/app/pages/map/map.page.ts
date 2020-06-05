@@ -86,6 +86,8 @@ export class MapPage implements AfterViewInit {
         this.map.removeLayer(this.markerPos);
       }
 
+     
+
       this.markerPos = L.marker(latlng, {});
       this.map.addLayer(this.markerPos).panTo(latlng, {
         animate:true,
@@ -161,11 +163,25 @@ export class MapPage implements AfterViewInit {
   }
   private Animations(){
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
+    if(!this.drawerState){
+      
+     
+    }
     if(this.drawerState){
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "37%");
     }else{
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "93%");
+      if(this.features != undefined){
+        this.features.removeFrom(this.map);
+      }
+      if(this.routing != undefined){
+        this.routing.remove();
+      }
+      this.map.panTo(this.markerPos.getLatLng());
+      
     }
+
+    
     setTimeout(() =>{this.map.invalidateSize();}, 600);
    
   }
@@ -188,7 +204,7 @@ export class MapPage implements AfterViewInit {
     
     this.routing = L.Routing.control(
     {
-      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.6:5000/route/v1' }),
+      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.7:5000/route/v1' }),
 
       plan: L.Routing.plan(waypoints, {
         draggableWaypoints:false,
