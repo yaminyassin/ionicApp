@@ -5,11 +5,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let park of parks">
+  <ion-card *ngFor="let place of places">
 
     <ion-card-content>
-      <ion-card-title>{{ park.properties.dist }}</ion-card-title>
-        <p>{{park.properties.ocupado}}</p>
+      <ion-card-title>{{ place.properties.dist }}</ion-card-title>
+        <p>{{place.properties.ocupado}}</p>
     </ion-card-content>
 </ion-card>
 

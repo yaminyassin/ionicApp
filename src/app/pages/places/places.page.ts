@@ -12,12 +12,12 @@ const { Geolocation } = Plugins;
 export class PlacesPage implements OnInit {
   lat:number;
   lng:number;
-  parks:any[];
+  places:any[];
 
   constructor(private service:ServiceService) {}
 
   ngOnInit() {
-    this.parks = [];
+    this.places = [];
     this.loadData();
   }
 
@@ -38,9 +38,9 @@ export class PlacesPage implements OnInit {
     .subscribe( (places) => {
       let data:any =places;
       data.forEach( e => { 
-        this.parks.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist)); 
+        this.places.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist)); 
       });
-      console.log(this.parks);
+      console.log(this.places);
     });
   }
 
@@ -53,17 +53,18 @@ export class PlacesPage implements OnInit {
 
   loadMoreParks(event:any){
     setTimeout(()=>{
-      this.service.getMoreParks(this.lat, this.lng, this.parks[this.parks.length-1].properties.dist)
+      this.service.getMoreParks(this.lat, this.lng, this.places[this.places.length-1].properties.dist)
       .subscribe( (places) => {
         let data:any =places;
         data.forEach( e => {
-          this.parks.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist));
+          this.places.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist));
         });
       }); 
+      
       event.target.complete();
-      console.log(this.parks);
+      console.log(this.places);
 
-      if(this.parks.length  >= 20){
+      if(this.places.length  >= 20){
         event.target.disabled = true;
       }
      

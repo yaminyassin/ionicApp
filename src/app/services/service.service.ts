@@ -22,5 +22,11 @@ export class ServiceService {
     return this.http.get(`${this.url}movel/parksnearme/${lat}/${long}/${dist}`)
   }
 
+  getPlaces(lat:number, long:number){
+    return this.http.get(`${this.url}movel/placesnearme/${lat}/${long}`);
+  }
+
+  
+
 
 }
