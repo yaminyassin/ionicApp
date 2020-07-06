@@ -5,20 +5,24 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let place of places">
+  <ion-card *ngFor="let place of places" color="primary">
+    <img src={{place.properties.photo_path}} />
+
+    <ion-card-header>
+      <ion-card-subtitle>{{place.properties.category}}</ion-card-subtitle>
+      <ion-card-title>{{ place.properties.name }}</ion-card-title>
+    </ion-card-header>
 
     <ion-card-content>
-      <ion-card-title>{{ place.properties.dist }}</ion-card-title>
-        <p>{{place.properties.ocupado}}</p>
+      {{place.properties.about}}
     </ion-card-content>
-</ion-card>
 
-<ion-infinite-scroll (ionInfinite)="loadMoreParks($event)">
-  <ion-infinite-scroll-content 
-  loadingSpinner="circles">
+  </ion-card>
 
+  <ion-infinite-scroll (ionInfinite)="loadMorePlaces($event)">
+    <ion-infinite-scroll-content loadingSpinner="circles">
 
-  </ion-infinite-scroll-content>
-</ion-infinite-scroll>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

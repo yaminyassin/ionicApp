@@ -13,6 +13,7 @@ export class PlacesPage implements OnInit {
   lat:number;
   lng:number;
   places:any[];
+  image:any = '../../assets/Food.png';
 
   constructor(private service:ServiceService) {}
 
@@ -34,33 +35,41 @@ export class PlacesPage implements OnInit {
         console.log(err);
     }
    
-    this.service.getParks(this.lat, this.lng)
+    this.service.getPlaces(this.lat, this.lng)
     .subscribe( (places) => {
-      let data:any =places;
+      let data:any = places;
       data.forEach( e => { 
-        this.places.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist)); 
+        this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist)); ///-----------
       });
       console.log(this.places);
     });
   }
 
-  private buildGeoJSON(ocupados:any, geo:any, dist:any): JSON{
+  private buildGeoJSON(photo_path:string, name:string, about:string, category:string, geo:any, dist:number): JSON{ //--------------
+    let img;
+    if(category == "Food"){
+      img ='../../assets/Food.png';
+    }else if(category == "Pharmacy"){
+      img ='../../assets/Pharmacy.png';
+    }else if(category == "Supermarket"){
+      img = '../../assets/Supermarket.png';
+    }
     let str =`{"type": "Feature",
-      "properties": { "ocupado": ${ocupados}, "dist": ${dist}},
+      "properties": {"photo_path":"${img}", "name":"${name}", "about":"${about}", "category":"${category}", "dist":"${dist}"},
       "geometry": ${geo}}`;
     return JSON.parse(str);
   }
 
-  loadMoreParks(event:any){
+  loadMorePlaces(event:any){  //-------------------
     setTimeout(()=>{
-      this.service.getMoreParks(this.lat, this.lng, this.places[this.places.length-1].properties.dist)
+      this.service.getMorePlaces(this.lat, this.lng, this.places[this.places.length-1].properties.dist)
       .subscribe( (places) => {
-        let data:any =places;
+        let data:any = places;
         data.forEach( e => {
-          this.places.push( this.buildGeoJSON(e.ocupado, e.geo, e.dist));
+          this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist));
         });
       }); 
-      
+
       event.target.complete();
       console.log(this.places);
 
