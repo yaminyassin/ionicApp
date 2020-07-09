@@ -36,7 +36,6 @@ export class SlideDrawerComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.Animations()
     this.stream.currentData.subscribe(data => this.parklist = data);
-    console.log(this.parklist)
     this.swipeHeader = this.element.nativeElement.children[0].children[0];
   }
 
@@ -66,8 +65,9 @@ export class SlideDrawerComponent implements AfterViewInit {
         }if (ev.deltaY > -100){ //snap back
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(0px)`);
           this.height = 0;
-          this.drawerState = false;
           this.parklist =[];
+          this.drawerState = false;
+         
         }if(this.parklist.length == 0){
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(0px)`);
           this.height = 0;
@@ -87,12 +87,15 @@ export class SlideDrawerComponent implements AfterViewInit {
   /* ------ Data sharing functions -------*/
 
   //Event Emitters
-  private stateChanged(value:boolean){
+
+  //Envia ao map o estado do drawer (aberto/fechado)
+  private stateChanged(value:boolean){ 
     console.log("child sent: "+ value);
     this.state.emit(value);
   }
 
-  public chosenPark(value: Object){
+  //Envia ao map o parque selecionado 
+  public chosenPark(value: Object){  
     console.log("child sent: "+ value);
     this.parkPicked.emit(value);
   }

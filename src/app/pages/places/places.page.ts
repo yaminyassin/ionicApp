@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceService } from '../../services/service.service';
+
 import { Plugins } from '@capacitor/core';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ToastController } from '@ionic/angular';
 import { PopoverCategories } from 'src/app/components/popover-categories/popover-categories.component';
+import { ServiceService } from '../../services/service.service';
+import { RoutingPlaceService } from '../../services/routing-place.service';
 
 const { Geolocation } = Plugins;
 
@@ -18,8 +20,11 @@ export class PlacesPage implements OnInit {
   image:any = '../../assets/Food.png';
   category:any;
 
-  constructor(private service:ServiceService,
-              private popoverController:PopoverController) {}
+  constructor(
+    private service:ServiceService,
+    private placeStream:RoutingPlaceService,
+    private popoverController:PopoverController,
+    private toastController: ToastController) {}
 
   ngOnInit() {
     this.places = [];
@@ -105,6 +110,23 @@ export class PlacesPage implements OnInit {
 
     this.places = [];
     this.loadData();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Go to Map to confirm destination',
+      color:"danger",
+      position:"middle",
+      
+      duration: 1000
+    });
+    toast.present();
+  }
+  public sendData(data:any){
+    console.log("sent data: " + data.properties.name );
+    this.presentToast();
+    this.placeStream.changeData(data);
+    this.placeStream.isPlaceSelected(true);
   }
   
 }

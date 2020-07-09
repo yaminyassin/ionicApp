@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@ang
 import { Plugins } from '@capacitor/core';
 import { ServiceService } from '../../services/service.service';
 import { DatastreamService } from '../../services/datastream.service';
+import { RoutingPlaceService } from '../../services/routing-place.service';
 
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -35,9 +36,13 @@ export class MapPage implements AfterViewInit {
   drawerState: boolean = false;
   sentparks: L.Layer[] = [];
 
+  chosenPlace: any;  //variavel que recebe o place escolhido
+  isPlaceSelected:boolean;
+
   constructor(
     private service:ServiceService,
     private stream:DatastreamService,
+    private placeStream:RoutingPlaceService,
     private element: ElementRef,
     private renderer: Renderer2) 
     {
@@ -47,6 +52,8 @@ export class MapPage implements AfterViewInit {
     
   ngAfterViewInit(){
     this.loadMap();
+    this.placeStream.currentData.subscribe(data => this.chosenPlace = data);
+    this.placeStream.selectedPlace.subscribe(value => this.isPlaceSelected = value);
   }
 
 
@@ -139,7 +146,6 @@ export class MapPage implements AfterViewInit {
     }); 
   }
 
-
   private buildGeoJSON(ocupados:any, geo:any, nvagos:any): JSON{
     let str =`{"type": "Feature",
       "properties": { "ocupado": ${ocupados}, "nvagos":"${nvagos}"},
@@ -185,7 +191,36 @@ export class MapPage implements AfterViewInit {
   }
  
 /*----- Data Sharing Functions -----*/
+  public getPlaceRoute(){
 
+
+    this.origin = this.markerPos.getLatLng();
+    this.desination = L.geoJSON(this.chosenPlace).getBounds().getCenter();
+    let waypoints = [this.origin, this.desination];
+
+    if( this.routing != undefined ){ this.routing.remove(); }
+     
+    
+    this.routing = L.Routing.control(
+    {
+      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.7:5000/route/v1' }),
+
+      plan: L.Routing.plan(waypoints, {
+        draggableWaypoints:false,
+        addWaypoints:false
+      }),
+
+      routeWhileDragging: false,
+      waypoints: waypoints,
+      lineOptions: {addWaypoints:false},
+      
+    }).addTo(this.map);
+
+    this.isPlaceSelected = false;
+    this.map.fitBounds(L.latLngBounds(waypoints), 
+    {padding: [50, 50]});
+ 
+  }
   public getRoute(value:Object){
     console.log("parent recieved: " + value);
 

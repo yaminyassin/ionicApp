@@ -9,9 +9,13 @@
           <ion-icon name="car-outline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-    </div>
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-button *ngIf="isPlaceSelected" size="small" (click)='getPlaceRoute()' color="danger">
+          click here to confirm<ion-icon name="cart-sharp"></ion-icon>
+        </ion-button>
 
-   
+      </ion-fab>
+    </div>
 
 </ion-content>
 
@@ -20,5 +24,7 @@
 
 
 </app-slide-drawer>
+
+
 <!-- 
   [parklist]="sentparks">meter um ngIF quando pedirmos os parques disponiveis -->
