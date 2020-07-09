@@ -1,10 +1,14 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>places</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Places</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-button expand="block" (click)="openPopover($event)">Choose Category</ion-button>
+  </ion-card>
+
   <ion-card *ngFor="let place of places" color="primary">
     <img src={{place.properties.photo_path}} />
 

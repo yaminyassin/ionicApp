@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PlacesPageRoutingModule } from './places-routing.module';
 
 import { PlacesPage } from './places.page';
-
+import { PopoverCategories } from '../../components/popover-categories/popover-categories.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { PlacesPage } from './places.page';
     IonicModule,
     PlacesPageRoutingModule
   ],
-  declarations: [PlacesPage]
+  declarations: [PlacesPage, PopoverCategories]
 })
 export class PlacesPageModule {}

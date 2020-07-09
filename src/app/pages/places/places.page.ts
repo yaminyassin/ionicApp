@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 import { Plugins } from '@capacitor/core';
+import { PopoverController } from '@ionic/angular';
+import { PopoverCategories } from 'src/app/components/popover-categories/popover-categories.component';
 
 const { Geolocation } = Plugins;
 
@@ -14,12 +16,15 @@ export class PlacesPage implements OnInit {
   lng:number;
   places:any[];
   image:any = '../../assets/Food.png';
+  category:any;
 
-  constructor(private service:ServiceService) {}
+  constructor(private service:ServiceService,
+              private popoverController:PopoverController) {}
 
   ngOnInit() {
     this.places = [];
     this.loadData();
+    this.category =  "All";
   }
 
   async loadData() {
@@ -38,10 +43,10 @@ export class PlacesPage implements OnInit {
     this.service.getPlaces(this.lat, this.lng)
     .subscribe( (places) => {
       let data:any = places;
-      data.forEach( e => { 
-        this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist)); ///-----------
-      });
-      console.log(this.places);
+      data.forEach(e => { 
+          if(this.category == "All" || this.category == e.category)
+            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist)); ///-----------
+        });
     });
   }
 
@@ -66,7 +71,8 @@ export class PlacesPage implements OnInit {
       .subscribe( (places) => {
         let data:any = places;
         data.forEach( e => {
-          this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist));
+          if(this.category == "All" || this.category == e.category)
+            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist));
         });
       }); 
 
@@ -79,6 +85,26 @@ export class PlacesPage implements OnInit {
      
     }, 1000);
     
+  }
+
+
+  //popover para escolher a categoria
+
+  async openPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverCategories,
+      event: ev,
+      translucent: false,
+      backdropDismiss:false
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+    this.category = data;
+    console.log("parent = "+ this.category) ;
+
+    this.places = [];
+    this.loadData();
   }
   
 }
