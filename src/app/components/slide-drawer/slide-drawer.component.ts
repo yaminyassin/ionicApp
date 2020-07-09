@@ -36,6 +36,7 @@ export class SlideDrawerComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.Animations()
     this.stream.currentData.subscribe(data => this.parklist = data);
+    console.log(this.parklist)
     this.swipeHeader = this.element.nativeElement.children[0].children[0];
   }
 
@@ -57,6 +58,7 @@ export class SlideDrawerComponent implements AfterViewInit {
       onEnd: ev => {
         this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
 
+        
         if(ev.deltaY < -100){ //snap to top
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(-350px)`);
           this.height = -350;
@@ -65,8 +67,13 @@ export class SlideDrawerComponent implements AfterViewInit {
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(0px)`);
           this.height = 0;
           this.drawerState = false;
+          this.parklist =[];
+        }if(this.parklist.length == 0){
+          this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(0px)`);
+          this.height = 0;
+          this.drawerState = false;
         }
-
+        
         //alterar state no final da animacao
         this.stateChanged(this.drawerState); 
       }
@@ -91,11 +98,4 @@ export class SlideDrawerComponent implements AfterViewInit {
   }
 
 
-  //Bidirectional 
-  loadMoreParks(event:any){
-    this.stream.currentData.subscribe(data=> {
-      this.parklist = data
-    });
-  
-  }
 }

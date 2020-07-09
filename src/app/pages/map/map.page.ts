@@ -5,7 +5,7 @@ import { DatastreamService } from '../../services/datastream.service';
 
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-import { ThrowStmt } from '@angular/compiler';
+
 
 const { Geolocation } = Plugins;
 
@@ -111,7 +111,7 @@ export class MapPage implements AfterViewInit {
       let layer:L.Layer;
 
       data.forEach( park => {
-        obj = this.buildGeoJSON(park.ocupado, park.geo);
+        obj = this.buildGeoJSON(park.ocupado, park.geo, park.nvagos);
 
         //array que envia parks ao component
         this.sentparks.push(park);
@@ -140,9 +140,9 @@ export class MapPage implements AfterViewInit {
   }
 
 
-  private buildGeoJSON(ocupados:any, geo:any): JSON{
+  private buildGeoJSON(ocupados:any, geo:any, nvagos:any): JSON{
     let str =`{"type": "Feature",
-      "properties": { "ocupado": ${ocupados}},
+      "properties": { "ocupado": ${ocupados}, "nvagos":"${nvagos}"},
       "geometry": ${geo}}`;
     return JSON.parse(str);
   }
@@ -163,13 +163,11 @@ export class MapPage implements AfterViewInit {
   }
   private Animations(){
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
-    if(!this.drawerState){
-      
-     
-    }
+
     if(this.drawerState){
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "37%");
-    }else{
+    }
+    else{
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "93%");
       if(this.features != undefined){
         this.features.removeFrom(this.map);
@@ -193,7 +191,7 @@ export class MapPage implements AfterViewInit {
 
     let route:any = value;
 
-    let obj:any = this.buildGeoJSON(route.ocupado, route.geo);
+    let obj:any = this.buildGeoJSON(route.ocupado, route.geo, route.nvagos);
 
     this.origin = this.markerPos.getLatLng();
     this.desination = L.geoJSON(obj, {style: this.style(obj)} ).getBounds().getCenter();
