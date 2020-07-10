@@ -7,5 +7,16 @@
 </ion-header>
 
 <ion-content>
+  <ion-card *ngFor="let notif of notifs" color="primary">
+      <ion-card-header>
+        <ion-card-subtitle>{{notif.category}}</ion-card-subtitle>
+        <ion-card-title>{{notif.name}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{notif.note}}
+      </ion-card-content>
+  </ion-card>
+
 
 </ion-content>
