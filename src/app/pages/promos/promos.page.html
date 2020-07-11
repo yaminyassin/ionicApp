@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-       Novidades
+       Explore
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,7 +13,7 @@
   <ion-card *ngFor="let notif of notifs" color="primary">
       <ion-card-header>
         <ion-card-subtitle>{{notif.category}}</ion-card-subtitle>
-        <ion-card-subtitle> Válido até {{notif.date_end}}</ion-card-subtitle>
+        <ion-card-subtitle> Valid until {{notif.date_end}}</ion-card-subtitle>
         <ion-card-title>{{notif.name}}</ion-card-title>
       </ion-card-header>
 
