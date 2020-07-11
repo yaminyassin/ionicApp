@@ -30,7 +30,13 @@ export class ServiceService {
     return this.http.get(`${this.url}movel/placesnearme/${lat}/${long}/${dist}`)
   }
 
+  getNotifs(lat:number, long:number){
+    return this.http.get(`${this.url}movel/notifs/${lat}/${long}`);
+  }
 
+  getMoreNotifs(lat:number, long:number, dist:number){
+    return this.http.get(`${this.url}movel/notifs/${lat}/${long}/${dist}`)
+  }
 
 
 }

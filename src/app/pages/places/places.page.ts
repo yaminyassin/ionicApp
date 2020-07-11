@@ -18,7 +18,7 @@ export class PlacesPage implements OnInit {
   lng:number;
   places:any[];
   image:any = '../../assets/Food.png';
-  category:any;
+  category:string;
 
   constructor(
     private service:ServiceService,

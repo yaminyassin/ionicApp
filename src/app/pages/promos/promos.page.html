@@ -7,9 +7,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-button expand="block" (click)="openPopover($event)">Choose Category</ion-button>
+  </ion-card>
   <ion-card *ngFor="let notif of notifs" color="primary">
       <ion-card-header>
         <ion-card-subtitle>{{notif.category}}</ion-card-subtitle>
+        <ion-card-subtitle> Válido até {{notif.date_end}}</ion-card-subtitle>
         <ion-card-title>{{notif.name}}</ion-card-title>
       </ion-card-header>
 
@@ -18,5 +22,11 @@
       </ion-card-content>
   </ion-card>
 
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreNotifs($event)">
+    <ion-infinite-scroll-content loadingSpinner="circles">
+
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
