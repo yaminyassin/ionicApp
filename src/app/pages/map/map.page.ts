@@ -31,13 +31,15 @@ export class MapPage implements AfterViewInit {
 
   features:L.FeatureGroup; //list of parks inside map
   
-  isVisable: boolean;    //making fab btns only appear when map move:
+  isVisable:boolean;    //making fab btns only appear when map move:
 
-  drawerState: boolean = false;
-  sentparks: L.Layer[] = [];
+  drawerState:boolean = false;
+  sentparks:L.Layer[] = [];
 
-  chosenPlace: any;  //variavel que recebe o place escolhido
+  chosenPlace:any;  //variavel que recebe o place escolhido
   isPlaceSelected:boolean;
+
+  osrm:string = 'http://192.168.1.15:5000/route/v1';
 
   constructor(
     private service:ServiceService,
@@ -203,7 +205,7 @@ export class MapPage implements AfterViewInit {
     
     this.routing = L.Routing.control(
     {
-      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.7:5000/route/v1' }),
+      router: L.Routing.osrmv1({ serviceUrl: this.osrm }),
 
       plan: L.Routing.plan(waypoints, {
         draggableWaypoints:false,
@@ -237,7 +239,7 @@ export class MapPage implements AfterViewInit {
     
     this.routing = L.Routing.control(
     {
-      router: L.Routing.osrmv1({ serviceUrl: 'http://192.168.1.7:5000/route/v1' }),
+      router: L.Routing.osrmv1({ serviceUrl: this.osrm }),
 
       plan: L.Routing.plan(waypoints, {
         draggableWaypoints:false,
