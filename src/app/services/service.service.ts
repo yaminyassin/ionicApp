@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ServiceService {
-  url = 'http://localhost:3000/';
+  url = 'https://daring-feat-273619.nw.r.appspot.com/';
   data:any;
   constructor(private http: HttpClient) {}
   
