@@ -11,7 +11,6 @@
 
   <ion-card-content>
     <div *ngIf="drawerState">
-
       <ion-list *ngFor='let park of parklist'>
         <ion-item button (click)="chosenPark(park)" color="secondary"> 
           <ion-icon name="car-sport-outline"></ion-icon>
@@ -21,6 +20,7 @@
             </ion-label>
         </ion-item>
       </ion-list>
+      
     </div>
   </ion-card-content>
 

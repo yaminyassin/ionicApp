@@ -5,25 +5,25 @@
         <ion-fab-button *ngIf='isVisable' size="small" (click)='getCurrentPos()'>
           <ion-icon name="navigate-circle-outline"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button size="small" (click)='getData()'>
+        <ion-fab-button *ngIf='!drawerState' size="small" (click)='getData()'>
           <ion-icon name="car-outline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-        <ion-button *ngIf="isPlaceSelected" size="small" (click)='getPlaceRoute()' color="danger">
+        <ion-button *ngIf="isPlaceSelected" size="small" (click)='getPlaceRoute()' color="success">
           click here to confirm<ion-icon name="cart-sharp"></ion-icon>
         </ion-button>
-
       </ion-fab>
+     
     </div>
-
+    <app-slide-drawer class='drawer'
+    (parkPicked)="getRoute($event)" (state)="getDrawerState($event)">
+    
+    
+    </app-slide-drawer>
 </ion-content>
 
-<app-slide-drawer 
-(parkPicked)="getRoute($event)" (state)="getDrawerState($event)">
 
-
-</app-slide-drawer>
 
 
 <!-- 

@@ -115,7 +115,7 @@ export class PlacesPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Go to Map to confirm destination',
-      color:"danger",
+      color:"success",
       position:"middle",
       
       duration: 1000

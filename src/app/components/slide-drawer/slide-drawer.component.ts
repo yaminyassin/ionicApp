@@ -15,6 +15,7 @@ export class SlideDrawerComponent implements AfterViewInit {
   //variaveis que comunicam
   @Output() state = new EventEmitter<boolean>();
   @Output() parkPicked = new EventEmitter<any>();
+  //@Output() moreParks = new EventEmitter<any>();
 
   parklist: any[] = [];
   drawerState:boolean;
@@ -62,6 +63,7 @@ export class SlideDrawerComponent implements AfterViewInit {
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(-350px)`);
           this.height = -350;
           this.drawerState = true;
+          
         }if (ev.deltaY > -100){ //snap back
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(0px)`);
           this.height = 0;
@@ -76,6 +78,7 @@ export class SlideDrawerComponent implements AfterViewInit {
         
         //alterar state no final da animacao
         this.stateChanged(this.drawerState); 
+        setTimeout(()=>{}, 800);
       }
     };
 
@@ -99,6 +102,7 @@ export class SlideDrawerComponent implements AfterViewInit {
     console.log("child sent: "+ value);
     this.parkPicked.emit(value);
   }
+
 
 
 }
