@@ -1,8 +1,12 @@
 
 <ion-card color="primary">
 
-  <ion-card-header>
-    <ion-card-title>Select a Park</ion-card-title> 
+  <ion-card-header  class="title">
+    <ion-item color="primary">
+      <ion-icon name="arrow-up-outline"> </ion-icon>
+      <ion-card-title>Select a Park</ion-card-title>
+      <ion-icon name="arrow-up-outline"> </ion-icon>
+    </ion-item>
   </ion-card-header>
 
   <ion-card-content>
@@ -11,11 +15,10 @@
       <ion-list *ngFor='let park of parklist'>
         <ion-item button (click)="chosenPark(park)" color="secondary"> 
           <ion-icon name="car-sport-outline"></ion-icon>
-          <ion-item-divider color="secondary">
+        
             <ion-label color="light">
             Available Spots : <strong>{{park.nfreespots}}</strong> 
             </ion-label>
-          </ion-item-divider>
         </ion-item>
       </ion-list>
     </div>

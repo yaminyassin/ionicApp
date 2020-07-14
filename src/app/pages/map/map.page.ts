@@ -75,7 +75,7 @@ export class MapPage implements AfterViewInit {
       let layer = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
       this.map.addLayer(layer); 
       
-    }, 1000);
+    }, 3000);
   }
 
 
@@ -188,7 +188,7 @@ export class MapPage implements AfterViewInit {
     }
 
     
-    setTimeout(() =>{this.map.invalidateSize();}, 600);
+    setTimeout(() =>{this.map.invalidateSize();}, 1000);
    
   }
  
@@ -263,6 +263,11 @@ export class MapPage implements AfterViewInit {
     console.log("parent recieved: "+ state);
     this.drawerState = state;
     this.Animations();
+    new Promise(() => {
+      setTimeout(() => {
+        
+      }, 3000);
+    })
   }
 
   public sendData(data: any){
