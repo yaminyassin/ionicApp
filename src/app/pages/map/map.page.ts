@@ -120,7 +120,7 @@ export class MapPage implements AfterViewInit {
       let layer:L.Layer;
 
       data.forEach( park => {
-        obj = this.buildGeoJSON(park.ocupado, park.geo, park.nvagos);
+        obj = this.buildGeoJSON(park.ocupado, park.geo, park.nfreespots);
 
         //array que envia parks ao component
         this.sentparks.push(park);
@@ -148,9 +148,9 @@ export class MapPage implements AfterViewInit {
     }); 
   }
 
-  private buildGeoJSON(ocupados:any, geo:any, nvagos:any): JSON{
+  private buildGeoJSON(ocupados:any, geo:any, nfreespots:any): JSON{
     let str =`{"type": "Feature",
-      "properties": { "ocupado": ${ocupados}, "nvagos":"${nvagos}"},
+      "properties": { "ocupado": ${ocupados}, "nfreespots":"${nfreespots}"},
       "geometry": ${geo}}`;
     return JSON.parse(str);
   }
@@ -228,7 +228,7 @@ export class MapPage implements AfterViewInit {
 
     let route:any = value;
 
-    let obj:any = this.buildGeoJSON(route.ocupado, route.geo, route.nvagos);
+    let obj:any = this.buildGeoJSON(route.ocupado, route.geo, route.nfreespots);
 
     this.origin = this.markerPos.getLatLng();
     this.desination = L.geoJSON(obj, {style: this.style(obj)} ).getBounds().getCenter();
