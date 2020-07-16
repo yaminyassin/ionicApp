@@ -176,13 +176,14 @@ export class MapPage implements AfterViewInit {
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
 
     if(this.drawerState){
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "38%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "37%");
     }
     else{
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "93%");
-      if(this.features.getLayers().length != 0){
+      if(this.features.getLayers().length != 0 || this.sentparks.length !=0){
         this.features.removeFrom(this.map);
         this.features = new L.FeatureGroup();
+        this.sentparks = [];
         this.presentToast('Cancelled', 'danger', "middle");
       }
       if(this.routing != undefined){

@@ -10,7 +10,7 @@
   </ion-card-header>
 
   <ion-card-content class="filler">
-    <div *ngIf="drawerState">
+    <div>
 
       <ion-card mode="md" *ngFor='let park of parklist' button (click)="chosenPark(park)" color="secondary" class="drawer">
         <ion-card-content > 
