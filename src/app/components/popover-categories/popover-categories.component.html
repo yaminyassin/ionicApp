@@ -1,4 +1,5 @@
-<ion-list *ngFor='let cat of categoryList'>
-  <ion-item button detail="false" color="secondary" (click)="clickCat(cat)">{{cat}}</ion-item>
+<ion-list>
+  <ion-item button detail="false" color="secondary" (click)="clickCat('All')">All</ion-item>
+  <ion-item *ngFor='let cat of categoryList' button detail="false" color="secondary" (click)="clickCat(cat)">{{cat}}</ion-item>
 
 </ion-list>
