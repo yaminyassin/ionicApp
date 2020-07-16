@@ -141,7 +141,7 @@ export class MapPage implements AfterViewInit {
       
       //Evia o array com os parques 
       this.sendData(this.sentparks);
-      this.presentToast('Swype up to see Parks', 'success', "top");
+      this.presentToast('Swipe up to see Parks', 'success', "top");
       this.map.fitBounds( this.features.getBounds(), 
       {
         animate:true,
@@ -176,7 +176,7 @@ export class MapPage implements AfterViewInit {
     this.renderer.setStyle(this.element.nativeElement, 'transition', '0.3s ease-out');
 
     if(this.drawerState){
-      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "37%");
+      this.renderer.setStyle(this.mapDiv.nativeElement, "height", "38%");
     }
     else{
       this.renderer.setStyle(this.mapDiv.nativeElement, "height", "93%");
