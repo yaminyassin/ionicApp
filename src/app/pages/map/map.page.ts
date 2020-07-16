@@ -41,7 +41,8 @@ export class MapPage implements AfterViewInit {
   chosenPlace:any;  //variavel que recebe o place escolhido
   isPlaceSelected:boolean;
 
-  osrm:string = 'http://192.168.1.15:5000/route/v1';
+  OSRM:string = 'http://35.246.84.173:80/route/v1';
+  MAP:string = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
   constructor(
     private service:ServiceService,
@@ -75,10 +76,10 @@ export class MapPage implements AfterViewInit {
       }
 
       this.map = L.map('map', mapOpt);
-      let layer = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+      let layer = new L.TileLayer(this.MAP);
       this.map.addLayer(layer); 
       
-    }, 2000);
+    }, 800);
   }
 
 
@@ -202,7 +203,7 @@ export class MapPage implements AfterViewInit {
     
     this.routing = L.Routing.control(
     {
-      router: L.Routing.osrmv1({ serviceUrl: this.osrm }),
+      router: L.Routing.osrmv1({ serviceUrl: this.OSRM }),
 
       plan: L.Routing.plan(waypoints, {
         draggableWaypoints:false,
@@ -237,7 +238,7 @@ export class MapPage implements AfterViewInit {
     
     this.routing = L.Routing.control(
     {
-      router: L.Routing.osrmv1({ serviceUrl: this.osrm }),
+      router: L.Routing.osrmv1({ serviceUrl: this.OSRM }),
 
       plan: L.Routing.plan(waypoints, {
         draggableWaypoints:false,
