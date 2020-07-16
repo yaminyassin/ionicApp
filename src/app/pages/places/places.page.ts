@@ -50,20 +50,15 @@ export class PlacesPage implements OnInit {
       let data:any = places;
       data.forEach(e => { 
           if(this.category == "All" || this.category == e.category)
-            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist)); ///-----------
+            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist, e.id)); ///-----------
         });
     });
   }
 
-  private buildGeoJSON(photo_path:string, name:string, about:string, category:string, geo:any, dist:number): JSON{ //--------------
-    let img;
-    if(category == "Food"){
-      img ='../../assets/Food.png';
-    }else if(category == "Pharmacy"){
-      img ='../../assets/Pharmacy.png';
-    }else if(category == "Supermarket"){
-      img = '../../assets/Supermarket.png';
-    }
+  private buildGeoJSON(photo_path:string, name:string, about:string, category:string, geo:any, dist:number, id:number): JSON{ //--------------
+   
+    let img = `../../assets/images/${id}.jpg`;  
+
     let str =`{"type": "Feature",
       "properties": {"photo_path":"${img}", "name":"${name}", "about":"${about}", "category":"${category}", "dist":"${dist}"},
       "geometry": ${geo}}`;
@@ -77,7 +72,7 @@ export class PlacesPage implements OnInit {
         let data:any = places;
         data.forEach( e => {
           if(this.category == "All" || this.category == e.category)
-            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist));
+            this.places.push( this.buildGeoJSON(e.photo_path, e.name, e.about, e.category, e.geo, e.dist, e.id));
         });
       }); 
 

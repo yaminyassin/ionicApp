@@ -38,5 +38,9 @@ export class ServiceService {
     return this.http.get(`${this.url}movel/notifs/${lat}/${long}/${dist}`)
   }
 
+  getCategories(){
+    return this.http.get(`${this.url}movel/categories`);
+  }
+
 
 }

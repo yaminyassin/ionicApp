@@ -1,6 +1,4 @@
-<ion-list >
-  <ion-item button detail="false" color="secondary" (click)="clickCat('All')">All</ion-item>
-  <ion-item button detail="false" color="secondary" (click)="clickCat('Food')">Food</ion-item>
-  <ion-item button detail="false" color="secondary" (click)="clickCat('Pharmacy')">Pharmacy</ion-item>
-  <ion-item button detail="false" color="secondary" (click)="clickCat('Supermarket')">Supermarket</ion-item>
+<ion-list *ngFor='let cat of categoryList'>
+  <ion-item button detail="false" color="secondary" (click)="clickCat(cat)">{{cat}}</ion-item>
+
 </ion-list>
