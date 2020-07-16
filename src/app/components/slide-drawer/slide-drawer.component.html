@@ -9,19 +9,17 @@
     </ion-item>
   </ion-card-header>
 
-  <ion-card-content>
-    <div *ngIf="drawerState">
-      <ion-list *ngFor='let park of parklist'>
-        <ion-item button (click)="chosenPark(park)" color="secondary"> 
-          <ion-icon name="car-sport-outline"></ion-icon>
-        
+  <ion-card-content *ngIf="drawerState">
+    
+    <ion-card mode="md" *ngFor='let park of parklist' button (click)="chosenPark(park)" color="secondary" class="drawer">
+        <ion-card-content > 
+            <ion-icon name="car-sport-sharp" color='light'></ion-icon>
             <ion-label color="light">
             Available Spots : <strong>{{park.nfreespots}}</strong> 
             </ion-label>
-        </ion-item>
-      </ion-list>
-      
-    </div>
+          </ion-card-content>
+    </ion-card>
+
   </ion-card-content>
 
 </ion-card>
