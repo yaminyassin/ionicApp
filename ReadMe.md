@@ -10,7 +10,7 @@
     - npm install leaflet-routing-machine --save
 
 3. Apos instalar os modulos deve abrir uma nova linha de comandos no root do projeto e escrever:
-    - ionic build
+     **ionic build**
 
 4. Para Modificar o endereco IP do Servico RestApi deve ir ao ficheiro [service.service.ts](src\app\services\service.service.ts)
 
@@ -18,5 +18,5 @@
 
 
 4. finalmente para visualizar a aplicacao no browser deve inserir:
-    - ionic serve
+     **ionic serve**
 
