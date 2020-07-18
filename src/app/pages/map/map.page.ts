@@ -41,7 +41,7 @@ export class MapPage implements AfterViewInit {
   chosenPlace:any;  //variavel que recebe o place escolhido
   isPlaceSelected:boolean;
 
-  OSRM:string = 'http://35.246.84.173:80/route/v1';
+  OSRM:string = 'http://35.242.135.13:80/route/v1';
   MAP:string = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
   constructor(
