@@ -1,5 +1,4 @@
 ## ParkFinder App
-#### idk
 
 1. Para inicializar este projeto deve primeiro instalar NodeJs atraves do link www.nodejs.org
 
