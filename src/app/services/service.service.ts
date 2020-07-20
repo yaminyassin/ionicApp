@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Linksservice } from '../interfaces/links';
-
+import { links } from '../links';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceService implements Linksservice{
-  url: "http://localhost:3000/";
+export class ServiceService{
+  url:string = links.url;
   data:any;
 
   constructor(private http: HttpClient) {}

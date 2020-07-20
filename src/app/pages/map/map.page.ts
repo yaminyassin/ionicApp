@@ -4,7 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { ServiceService } from '../../services/service.service';
 import { DatastreamService } from '../../services/datastream.service';
 import { RoutingPlaceService } from '../../services/routing-place.service';
-import { Linksmap } from 'src/app/interfaces/links';
+import { links } from '../../links';
 
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -19,7 +19,7 @@ const { Geolocation } = Plugins;
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage implements AfterViewInit, Linksmap {
+export class MapPage implements AfterViewInit{
 
   @ViewChild('map') mapDiv: ElementRef; 
 
@@ -43,9 +43,9 @@ export class MapPage implements AfterViewInit, Linksmap {
   chosenPlace:any;  //variavel que recebe o place escolhido
   isPlaceSelected:boolean;
 
-  OSRM: "http://35.242.135.13:80/route/v1";
-  MAP: "https://{s}.tile.osm.org/{z}/{x}/{y}.png";
-  
+  OSRM:string = links.OSRM;
+  MAP:string =  links.MAP;
+
   constructor(
     private service:ServiceService,
     private stream:DatastreamService,
