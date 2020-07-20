@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Linksservice } from '../interfaces/links';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceService {
-  url = 'https://daring-feat-273619.nw.r.appspot.com/';
+export class ServiceService implements Linksservice{
+  url: "http://localhost:3000/";
   data:any;
+
   constructor(private http: HttpClient) {}
   
   getParks(lat:number, long:number){
