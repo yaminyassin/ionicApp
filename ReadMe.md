@@ -10,13 +10,15 @@
     - npm install leaflet-routing-machine --save
 
 3. Apos instalar os modulos deve abrir uma nova linha de comandos no root do projeto e escrever:
-    - ionic build
+     **ionic build**
 
 4. Para Modificar o endereco IP do Servico RestApi deve ir ao ficheiro [service.service.ts](src\app\services\service.service.ts)
 
 5. para Modificar o endereco IP do OSRM (servico routing) deve ir ao ficheiro [map.page.ts](src\app\pages\map\map.page.ts) e alterar a variavel OSRM
 
-
 4. finalmente para visualizar a aplicacao no browser deve inserir:
-    - ionic serve
+     **ionic serve**
 
+##REQUIREMENTS
+
+1. Deve ter instalado o [OSRM-server](https://hub.docker.com/r/osrm/osrm-backend) e o [parkFinderService](https://github.com/yaminyassin/RestApi.git)
